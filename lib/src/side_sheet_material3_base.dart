@@ -61,13 +61,22 @@ Future<void> showModalSideSheet(
   String cancelActionTitle = 'Cancel',
   void Function()? confirmActionOnPressed,
   void Function()? cancelActionOnPressed,
+  Duration? transitionDuration,
 }) async {
   showGeneralDialog(
     context: context,
+    transitionDuration: transitionDuration ?? Duration(milliseconds: 500),
     barrierDismissible: barrierDismissible,
     barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.3),
     barrierLabel: 'Material 3 side sheet',
-    pageBuilder: ((context, animation, secondaryAnimation) {
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position:
+            Tween(begin: Offset(1, 0), end: Offset(0, 0)).animate(animation),
+        child: child,
+      );
+    },
+    pageBuilder: (context, animation1, animation2) {
       return Align(
         alignment: Alignment.centerRight,
         child: SideSheetMaterial3(
@@ -82,7 +91,7 @@ Future<void> showModalSideSheet(
           cancelActionTitle: cancelActionTitle,
         ),
       );
-    }),
+    },
   );
 }
 
