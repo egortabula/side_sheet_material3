@@ -49,7 +49,7 @@ import 'package:flutter/material.dart';
 ///   },
 /// );
 /// ```
-Future<void> showSideSheet(
+Future<void> showModalSideSheet(
   BuildContext context, {
   required Widget body,
   required String header,
