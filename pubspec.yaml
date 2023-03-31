@@ -1,13 +1,21 @@
 name: side_sheet_material3
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+description: This Flutter package provides a Material Design 3 modal side sheet widget.
+version: 0.0.1
+repository: https://github.com/egortabula/side_sheet_material3
+issue_tracker: https://github.com/egortabula/side_sheet_material3/issues
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
+screenshots:
+  - description: 'This screenshot shows the thumbnail of the package'
+    path: assets/Material design 3 side sheet.jpg
 
 environment:
   sdk: '>=2.19.4 <3.0.0'
-
-# dependencies:
-#   path: ^1.8.0
 
 dev_dependencies:
   lints: ^2.0.0
@@ -15,3 +23,4 @@ dev_dependencies:
 dependencies:
   flutter:
     sdk: flutter
+
