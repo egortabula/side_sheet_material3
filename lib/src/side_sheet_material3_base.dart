@@ -12,11 +12,14 @@ import 'package:flutter/material.dart';
 /// The [addBackIconButton] boolean value determines if the side sheet should
 /// display a back button to close the dialog. By default, it is set to false.
 ///
+/// The [addCloseIconButton] boolean value determines if the side sheet should
+/// display a close button to close the dialog. By default, it is set to `true`.
+///
 /// The [addActions] boolean value determines if the side sheet should display
-/// the action buttons or not. By default, it is set to true.
+/// the action buttons or not. By default, it is set to `true`.
 ///
 /// The [addDivider] boolean value determines if the side sheet should display
-/// a divider between the body and action buttons or not. By default, it is set to true.
+/// a divider between the body and action buttons or not. By default, it is set to `true`.
 ///
 /// The [confirmActionTitle] is a string value for the text of the confirm action button.
 /// By default, it is set to 'Save'.
@@ -29,6 +32,12 @@ import 'package:flutter/material.dart';
 ///
 /// The [cancelActionOnPressed] is a function that will be called when the cancel action button
 /// is pressed. By default, it is set to null.
+///
+/// The [closeButtonTooltip] is a string value for the text of the close button tooltip.
+/// By default, it is set to 'Close'.
+///
+/// The [backButtonTooltip] is a string value for the text of the back button tooltip.
+/// By default, it is set to 'Back'.
 ///
 /// Example:
 /// ```
@@ -52,13 +61,18 @@ import 'package:flutter/material.dart';
 Future<void> showModalSideSheet(
   BuildContext context, {
   required Widget body,
+
+  ///
   required String header,
   bool barrierDismissible = false,
   bool addBackIconButton = false,
+  bool addCloseIconButton = true,
   bool addActions = true,
   bool addDivider = true,
   String confirmActionTitle = 'Save',
   String cancelActionTitle = 'Cancel',
+  String? closeButtonTooltip = 'Close',
+  String? backButtonTooltip = 'Back',
   void Function()? confirmActionOnPressed,
   void Function()? cancelActionOnPressed,
   Duration? transitionDuration,
@@ -71,8 +85,9 @@ Future<void> showModalSideSheet(
     barrierLabel: 'Material 3 side sheet',
     transitionBuilder: (context, animation, secondaryAnimation, child) {
       return SlideTransition(
-        position:
-            Tween(begin: Offset(1, 0), end: Offset(0, 0)).animate(animation),
+        position: Tween(begin: Offset(1, 0), end: Offset(0, 0)).animate(
+          animation,
+        ),
         child: child,
       );
     },
@@ -89,6 +104,9 @@ Future<void> showModalSideSheet(
           cancelActionOnPressed: cancelActionOnPressed,
           confirmActionTitle: confirmActionTitle,
           cancelActionTitle: cancelActionTitle,
+          closeButtonTooltip: closeButtonTooltip,
+          backButtonTooltip: backButtonTooltip,
+          addCloseIconButton: addCloseIconButton,
         ),
       );
     },
@@ -99,10 +117,14 @@ class SideSheetMaterial3 extends StatelessWidget {
   final String header;
   final Widget body;
   final bool addBackIconButton;
+  final bool addCloseIconButton;
   final bool addActions;
   final bool addDivider;
   final String confirmActionTitle;
   final String cancelActionTitle;
+  final String? closeButtonTooltip;
+  final String? backButtonTooltip;
+
   final void Function()? confirmActionOnPressed;
   final void Function()? cancelActionOnPressed;
   const SideSheetMaterial3({
@@ -116,6 +138,9 @@ class SideSheetMaterial3 extends StatelessWidget {
     required this.confirmActionOnPressed,
     required this.cancelActionTitle,
     required this.confirmActionTitle,
+    required this.closeButtonTooltip,
+    required this.backButtonTooltip,
+    required this.addCloseIconButton,
   });
 
   @override
@@ -129,27 +154,17 @@ class SideSheetMaterial3 extends StatelessWidget {
       elevation: 1,
       color: colorScheme.surface,
       surfaceTintColor: colorScheme.surfaceTint,
-      borderRadius: const BorderRadius.horizontal(
-        left: Radius.circular(28),
-      ),
+      borderRadius: const BorderRadius.horizontal(left: Radius.circular(28)),
       child: Container(
         constraints: BoxConstraints(
           minWidth: 256,
-          maxWidth: 400,
+          maxWidth: size.width <= 600 ? size.width : 400,
           minHeight: size.height,
           maxHeight: size.height,
         ),
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                addBackIconButton ? 16 : 24,
-                16,
-                16,
-                16,
-              ),
-              child: _buildHeader(textTheme, context),
-            ),
+            _buildHeader(textTheme, context),
             Expanded(
               child: body,
             ),
@@ -167,35 +182,45 @@ class SideSheetMaterial3 extends StatelessWidget {
     TextTheme textTheme,
     BuildContext context,
   ) {
-    return Row(
-      children: [
-        Visibility(
-          visible: addBackIconButton,
-          child: Container(
-            margin: const EdgeInsets.only(right: 12),
+    return Padding(
+      padding: EdgeInsets.fromLTRB(addBackIconButton ? 16 : 24, 16, 16, 16),
+      child: Row(
+        children: [
+          Visibility(
+            visible: addBackIconButton,
+            child: Container(
+              margin: const EdgeInsets.only(right: 12),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                tooltip: backButtonTooltip,
+                icon: const Icon(Icons.arrow_back),
+              ),
+            ),
+          ),
+          Text(
+            header,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: textTheme.titleSmall,
+          ),
+          Flexible(
+            fit: FlexFit.tight,
+            child: SizedBox(width: addCloseIconButton ? 12 : 8),
+          ),
+          Visibility(
+            visible: addCloseIconButton,
             child: IconButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(Icons.arrow_back),
+              tooltip: closeButtonTooltip,
+              icon: const Icon(Icons.close),
             ),
           ),
-        ),
-        Text(
-          header,
-          style: textTheme.titleSmall,
-        ),
-        const Flexible(
-          fit: FlexFit.tight,
-          child: SizedBox(width: 12),
-        ),
-        IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.close),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
