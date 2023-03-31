@@ -1,39 +1,52 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+<!-- ![](https://i.ibb.co/fdzqFyR/shopping-cart-flutter-package.jpg) -->
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+- [Material Design 3 modal side sheet](#material-design-3-modal-side-sheet)
+  - [Features](#features)
+  - [Usage](#usage)
+  - [Example](#example)
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+# Material Design 3 modal side sheet
+A Flutter package that provides a Material Design 3 side sheet as a general dialog.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+Please check out the [official documentation](https://m3.material.io/components/side-sheets/overview) for more information on Material Design side sheet
 
 ## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
+- Custom header and body widgets.
+- Option to add a back button and close button.
+- Option to add confirm and cancel action buttons.
+- Option to show/hide a divider between the body and action buttons.
+- Customizable button text and tooltips.
+- Option to dismiss the dialog by tapping outside of it.
+  
 ## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+To use this package, add `side_sheet_material3` as a dependency in your pubspec.yaml file.
 
 ```dart
-const like = 'sample';
+dependencies:
+  side_sheet_material3: ^0.0.1
 ```
 
-## Additional information
+## Example
+```dart
+await showModalSideSheet(
+  context: context,
+  header: 'Edit Profile',
+  body: ProfileEditForm(), // Put your content widget here
+  addBackIconButton: true,
+  addActions: true,
+  addDivider: true,
+  confirmActionTitle: 'Save',
+  cancelActionTitle: 'Cancel',
+  confirmActionOnPressed: () {
+    // Do something
+  },
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+  // If null, Navigator.pop(context) will used
+  cancelActionOnPressed: () {
+    // Do something
+  },
+);
+```
+Please check out the [full example](https://pub.dev/documentation/side_sheet_material3/example) for more information on how to use this package.
+
+[![Buy me a coffe](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png "Buy me a coffe")](https://www.buymeacoffee.com/egortabula "Buy me a coffe")
