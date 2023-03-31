@@ -61,8 +61,6 @@ import 'package:flutter/material.dart';
 Future<void> showModalSideSheet(
   BuildContext context, {
   required Widget body,
-
-  ///
   required String header,
   bool barrierDismissible = false,
   bool addBackIconButton = false,
