@@ -1,4 +1,4 @@
-<!-- ![](https://i.ibb.co/fdzqFyR/shopping-cart-flutter-package.jpg) -->
+![](https://raw.githubusercontent.com/egortabula/side_sheet_material3/main/assets/Material%20design%203%20side%20sheet.jpg)
 
 - [Material Design 3 modal side sheet](#material-design-3-modal-side-sheet)
   - [Features](#features)
