@@ -4,4 +4,7 @@
 
 ## 0.0.2
 
-- Add onClose event
+- Added onClose event
+- Added onDismiss event
+- Added safeArea
+- Updated example project
