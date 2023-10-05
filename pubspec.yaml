@@ -1,6 +1,6 @@
 name: side_sheet_material3
 description: This Flutter package provides a Material Design 3 modal side sheet widget.
-version: 0.0.1
+version: 0.0.2
 repository: https://github.com/egortabula/side_sheet_material3
 issue_tracker: https://github.com/egortabula/side_sheet_material3/issues
 platforms:

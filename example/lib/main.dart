@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
 
                 // Required
                 header: 'Edit user',
-
                 barrierDismissible: false,
                 addBackIconButton: false,
                 addCloseIconButton: true,
@@ -39,12 +38,19 @@ class MyApp extends StatelessWidget {
                 confirmActionTitle: 'Update',
                 cancelActionTitle: 'Cancel',
                 confirmActionOnPressed: () {},
-                transitionDuration: Duration(milliseconds: 500),
+                transitionDuration: const Duration(milliseconds: 500),
                 closeButtonTooltip: 'Close',
                 backButtonTooltip: 'Back',
+                onDismiss: () {
+                  debugPrint('on dismiss event');
+                },
+                onClose: () {
+                  Navigator.pop(context);
+                  debugPrint('on close event');
+                },
               );
             },
-            child: Text('show side sheet'),
+            child: const Text('show side sheet'),
           ),
         ),
       ),

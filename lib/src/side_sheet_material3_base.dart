@@ -33,6 +33,12 @@ import 'package:flutter/material.dart';
 /// The [cancelActionOnPressed] is a function that will be called when the cancel action button
 /// is pressed. By default, it is set to null.
 ///
+/// The [onClose] is a function that will be called when the close action button
+/// is pressed. By default, it will call `Navigator.pop(context)`.
+///
+/// The [onDismiss] is a function that will be called when you dismiss side sheet
+/// By default, it is set to null`.
+///
 /// The [closeButtonTooltip] is a string value for the text of the close button tooltip.
 /// By default, it is set to 'Close'.
 ///
@@ -73,9 +79,11 @@ Future<void> showModalSideSheet(
   String? backButtonTooltip = 'Back',
   void Function()? confirmActionOnPressed,
   void Function()? cancelActionOnPressed,
+  void Function()? onDismiss,
+  void Function()? onClose,
   Duration? transitionDuration,
 }) async {
-  showGeneralDialog(
+  await showGeneralDialog(
     context: context,
     transitionDuration: transitionDuration ?? Duration(milliseconds: 500),
     barrierDismissible: barrierDismissible,
@@ -105,8 +113,16 @@ Future<void> showModalSideSheet(
           closeButtonTooltip: closeButtonTooltip,
           backButtonTooltip: backButtonTooltip,
           addCloseIconButton: addCloseIconButton,
+          onClose: onClose,
         ),
       );
+    },
+  ).then(
+    (value) {
+      if (!barrierDismissible) return;
+      if (onDismiss != null) {
+        onDismiss();
+      }
     },
   );
 }
@@ -125,6 +141,7 @@ class SideSheetMaterial3 extends StatelessWidget {
 
   final void Function()? confirmActionOnPressed;
   final void Function()? cancelActionOnPressed;
+  final void Function()? onClose;
   const SideSheetMaterial3({
     super.key,
     required this.header,
@@ -139,6 +156,7 @@ class SideSheetMaterial3 extends StatelessWidget {
     required this.closeButtonTooltip,
     required this.backButtonTooltip,
     required this.addCloseIconButton,
+    required this.onClose,
   });
 
   @override
@@ -190,7 +208,11 @@ class SideSheetMaterial3 extends StatelessWidget {
               margin: const EdgeInsets.only(right: 12),
               child: IconButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  if (onClose == null) {
+                    Navigator.pop(context);
+                  } else {
+                    onClose!();
+                  }
                 },
                 tooltip: backButtonTooltip,
                 icon: const Icon(Icons.arrow_back),
@@ -211,7 +233,11 @@ class SideSheetMaterial3 extends StatelessWidget {
             visible: addCloseIconButton,
             child: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                if (onClose == null) {
+                  Navigator.pop(context);
+                } else {
+                  onClose!();
+                }
               },
               tooltip: closeButtonTooltip,
               icon: const Icon(Icons.close),
@@ -243,7 +269,7 @@ class SideSheetMaterial3 extends StatelessWidget {
               const SizedBox(width: 12),
               OutlinedButton(
                 onPressed: () {
-                  if (cancelActionOnPressed == null) {
+                  if (confirmActionOnPressed == null) {
                     Navigator.pop(context);
                   } else {
                     cancelActionOnPressed!();
