@@ -73,6 +73,8 @@ Future<void> showModalSideSheet(
   bool addCloseIconButton = true,
   bool addActions = true,
   bool addDivider = true,
+  bool safeAreaTop = true,
+  bool safeAreaBottom = false,
   String confirmActionTitle = 'Save',
   String cancelActionTitle = 'Cancel',
   String? closeButtonTooltip = 'Close',
@@ -106,6 +108,8 @@ Future<void> showModalSideSheet(
           addBackIconButton: addBackIconButton,
           addActions: addActions,
           addDivider: addDivider,
+          safeAreaTop: safeAreaTop,
+          safeAreaBottom: safeAreaBottom,
           confirmActionOnPressed: confirmActionOnPressed,
           cancelActionOnPressed: cancelActionOnPressed,
           confirmActionTitle: confirmActionTitle,
@@ -134,6 +138,8 @@ class SideSheetMaterial3 extends StatelessWidget {
   final bool addCloseIconButton;
   final bool addActions;
   final bool addDivider;
+  final bool safeAreaTop;
+  final bool safeAreaBottom;
   final String confirmActionTitle;
   final String cancelActionTitle;
   final String? closeButtonTooltip;
@@ -149,6 +155,8 @@ class SideSheetMaterial3 extends StatelessWidget {
     required this.addBackIconButton,
     required this.addActions,
     required this.addDivider,
+    required this.safeAreaBottom,
+    required this.safeAreaTop,
     required this.cancelActionOnPressed,
     required this.confirmActionOnPressed,
     required this.cancelActionTitle,
@@ -171,24 +179,29 @@ class SideSheetMaterial3 extends StatelessWidget {
       color: colorScheme.surface,
       surfaceTintColor: colorScheme.surfaceTint,
       borderRadius: const BorderRadius.horizontal(left: Radius.circular(28)),
-      child: Container(
-        constraints: BoxConstraints(
-          minWidth: 256,
-          maxWidth: size.width <= 600 ? size.width : 400,
-          minHeight: size.height,
-          maxHeight: size.height,
-        ),
-        child: Column(
-          children: [
-            _buildHeader(textTheme, context),
-            Expanded(
-              child: body,
-            ),
-            Visibility(
-              visible: addActions,
-              child: _buildFooter(context),
-            ),
-          ],
+      child: SafeArea(
+        top: safeAreaTop,
+        bottom: safeAreaBottom,
+        minimum: EdgeInsets.only(top: addBackIconButton ? 16 : 24),
+        child: Container(
+          constraints: BoxConstraints(
+            minWidth: 256,
+            maxWidth: size.width <= 600 ? size.width : 400,
+            minHeight: size.height,
+            maxHeight: size.height,
+          ),
+          child: Column(
+            children: [
+              _buildHeader(textTheme, context),
+              Expanded(
+                child: body,
+              ),
+              Visibility(
+                visible: addActions,
+                child: _buildFooter(context),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -199,7 +212,7 @@ class SideSheetMaterial3 extends StatelessWidget {
     BuildContext context,
   ) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(addBackIconButton ? 16 : 24, 16, 16, 16),
+      padding: EdgeInsets.fromLTRB(addBackIconButton ? 16 : 24, 0, 16, 16),
       child: Row(
         children: [
           Visibility(
@@ -269,7 +282,7 @@ class SideSheetMaterial3 extends StatelessWidget {
               const SizedBox(width: 12),
               OutlinedButton(
                 onPressed: () {
-                  if (confirmActionOnPressed == null) {
+                  if (cancelActionOnPressed == null) {
                     Navigator.pop(context);
                   } else {
                     cancelActionOnPressed!();
