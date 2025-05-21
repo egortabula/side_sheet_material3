@@ -64,7 +64,8 @@ import 'package:flutter/material.dart';
 ///   },
 /// );
 /// ```
-Future<void> showModalSideSheet(
+@Deprecated('Use showModalSideSheet instead')
+Future<void> showModalSideSheetOld(
   BuildContext context, {
   required Widget body,
   required String header,
@@ -296,4 +297,34 @@ class SideSheetMaterial3 extends StatelessWidget {
       ],
     );
   }
+}
+
+Future<T?> showModalSideSheet<T extends Object?>(
+  BuildContext context, {
+  required Widget sheet,
+  void Function()? onDismiss,
+  Duration? transitionDuration,
+  bool barrierDismissible = false,
+}) async {
+  return await showGeneralDialog<T?>(
+    context: context,
+    transitionDuration: transitionDuration ?? Duration(milliseconds: 500),
+    barrierDismissible: barrierDismissible,
+    barrierColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.3),
+    barrierLabel: 'Material 3 modal side sheet',
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: Tween(begin: Offset(1, 0), end: Offset(0, 0)).animate(
+          animation,
+        ),
+        child: child,
+      );
+    },
+    pageBuilder: (context, animation1, animation2) {
+      return Align(
+        alignment: Alignment.centerRight,
+        child: sheet,
+      );
+    },
+  );
 }
