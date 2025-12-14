@@ -149,6 +149,11 @@ class SideSheetMaterial3 extends StatelessWidget {
   final void Function()? confirmActionOnPressed;
   final void Function()? cancelActionOnPressed;
   final void Function()? onClose;
+
+  /// An optional builder for the confirm button.
+  /// When provided, it takes precedence over [confirmActionTitle] and [confirmActionOnPressed].
+  /// This is useful when you need to control the button state (e.g., show a loading spinner).
+  final Widget Function(BuildContext context)? confirmButtonBuilder;
   const SideSheetMaterial3({
     super.key,
     required this.header,
@@ -166,6 +171,7 @@ class SideSheetMaterial3 extends StatelessWidget {
     required this.backButtonTooltip,
     required this.addCloseIconButton,
     required this.onClose,
+    this.confirmButtonBuilder,
   });
 
   @override
@@ -276,10 +282,12 @@ class SideSheetMaterial3 extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(24.0, 16, 24, 24),
           child: Row(
             children: [
-              FilledButton(
-                onPressed: confirmActionOnPressed,
-                child: Text(confirmActionTitle),
-              ),
+              confirmButtonBuilder != null
+                  ? confirmButtonBuilder!(context)
+                  : FilledButton(
+                      onPressed: confirmActionOnPressed,
+                      child: Text(confirmActionTitle),
+                    ),
               const SizedBox(width: 12),
               OutlinedButton(
                 onPressed: () {
