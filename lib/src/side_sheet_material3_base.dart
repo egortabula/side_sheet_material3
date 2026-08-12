@@ -39,6 +39,9 @@ import 'package:flutter/material.dart';
 /// The [onDismiss] is a function that will be called when you dismiss side sheet
 /// By default, it is set to null`.
 ///
+/// The [useRootNavigator] boolean value determines whether the side sheet is
+/// pushed onto the root navigator. By default, it is set to `true`.
+///
 /// The [closeButtonTooltip] is a string value for the text of the close button tooltip.
 /// By default, it is set to 'Close'.
 ///
@@ -84,18 +87,21 @@ Future<void> showModalSideSheet(
   void Function()? onDismiss,
   void Function()? onClose,
   Duration? transitionDuration,
+  bool useRootNavigator = true,
 }) async {
   await showGeneralDialog(
     context: context,
+    useRootNavigator: useRootNavigator,
     transitionDuration: transitionDuration ?? Duration(milliseconds: 500),
     barrierDismissible: barrierDismissible,
     barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.3),
     barrierLabel: 'Material 3 side sheet',
     transitionBuilder: (context, animation, secondaryAnimation, child) {
       return SlideTransition(
-        position: Tween(begin: Offset(1, 0), end: Offset(0, 0)).animate(
-          animation,
-        ),
+        position: Tween(
+          begin: Offset(1, 0),
+          end: Offset(0, 0),
+        ).animate(animation),
         child: child,
       );
     },
@@ -121,14 +127,12 @@ Future<void> showModalSideSheet(
         ),
       );
     },
-  ).then(
-    (value) {
-      if (!barrierDismissible) return;
-      if (onDismiss != null) {
-        onDismiss();
-      }
-    },
-  );
+  ).then((value) {
+    if (!barrierDismissible) return;
+    if (onDismiss != null) {
+      onDismiss();
+    }
+  });
 }
 
 class SideSheetMaterial3 extends StatelessWidget {
@@ -193,13 +197,8 @@ class SideSheetMaterial3 extends StatelessWidget {
           child: Column(
             children: [
               _buildHeader(textTheme, context),
-              Expanded(
-                child: body,
-              ),
-              Visibility(
-                visible: addActions,
-                child: _buildFooter(context),
-              ),
+              Expanded(child: body),
+              Visibility(visible: addActions, child: _buildFooter(context)),
             ],
           ),
         ),
@@ -207,10 +206,7 @@ class SideSheetMaterial3 extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(
-    TextTheme textTheme,
-    BuildContext context,
-  ) {
+  Widget _buildHeader(TextTheme textTheme, BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(addBackIconButton ? 16 : 24, 0, 16, 16),
       child: Row(
@@ -266,10 +262,7 @@ class SideSheetMaterial3 extends StatelessWidget {
       children: [
         Visibility(
           visible: addDivider,
-          child: const Divider(
-            indent: 24,
-            endIndent: 24,
-          ),
+          child: const Divider(indent: 24, endIndent: 24),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(24.0, 16, 24, 24),
