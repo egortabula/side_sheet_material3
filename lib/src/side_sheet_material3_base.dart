@@ -89,7 +89,7 @@ Future<void> showModalSideSheet(
     context: context,
     transitionDuration: transitionDuration ?? Duration(milliseconds: 500),
     barrierDismissible: barrierDismissible,
-    barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.3),
+    barrierColor: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.3),
     barrierLabel: 'Material 3 side sheet',
     transitionBuilder: (context, animation, secondaryAnimation, child) {
       return SlideTransition(
