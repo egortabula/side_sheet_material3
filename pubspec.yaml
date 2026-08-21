@@ -23,4 +23,5 @@ dev_dependencies:
 dependencies:
   flutter:
     sdk: flutter
+  material_ui: ^1.0.1
 

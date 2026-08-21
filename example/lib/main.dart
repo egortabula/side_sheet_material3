@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:side_sheet_material3/side_sheet_material3.dart';
 
 void main() => runApp(const MyApp());
